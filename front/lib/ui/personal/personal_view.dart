@@ -73,7 +73,7 @@ class PersonalContent extends HookConsumerWidget {
                 if (inputBools.value.length == 6) {
                   await _controller
                       .register(inputBools.value)
-                      .then((value) => context.go("/welcome"));
+                      .then((value) => context.go("/"));
                 }
               },
               child: Container(
