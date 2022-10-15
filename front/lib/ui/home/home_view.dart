@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,31 +13,24 @@ import 'package:mirai_nikki/domain/model/posts_model.dart';
 import 'package:mirai_nikki/domain/model/user_model.dart';
 import 'package:mirai_nikki/domain/state/user_state.dart';
 import 'package:mirai_nikki/ui/home/home_controller.dart';
+import 'package:mirai_nikki/ui/home/home_ui_model.dart';
 import 'package:mirai_nikki/ui/widget/diary_fragment.dart';
 import 'package:mirai_nikki/ui/widget/main_divider.dart';
 
 class HomeView extends HookConsumerWidget {
   final HomeController _controller;
-  final PostsModel _state;
-  const HomeView(this._controller, this._state, {super.key});
+  final HomeUiModel _state;
+  HomeView(this._controller, this._state, {super.key});
+  PostModel post = PostModel();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isMounted = useIsMounted();
-    void login() async {
-      await _controller.addPost().then((value) {
-        Logger().wtf("Aaaa");
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          if (isMounted()) {
-            context.push('/welcome');
-          }
-        });
-      });
-    }
-
+    final flag = useState(false);
+    final postModel = useState(const PostModel());
     final diary = <Widget>[];
 
-    for (var post in _state.list) {
+    for (var post in _state.posts.list) {
       diary.add(DiaryFragment(post));
     }
     return Scaffold(
@@ -68,15 +62,36 @@ class HomeView extends HookConsumerWidget {
                     border: Border.all(color: Colors.black, width: 4),
                     shape: BoxShape.circle),
                 child: IconButton(
-                  icon: const FittedBox(
+                  icon: FittedBox(
                     fit: BoxFit.fill,
                     child: Icon(Icons.add),
                   ),
-                  onPressed: login,
+                  onPressed: () async {
+                    if (EasyLoading.isShow) {
+                      Logger().d("You now loading");
+                    } else {
+                      EasyLoading.show(status: 'loading...');
+                      await _controller.addPost().then((value) {
+                        flag.value = false;
+                        EasyLoading.dismiss();
+
+                        context.push(
+                            "/awesome?query=${jsonEncode(value.toJson())}");
+                      });
+                      flag.value = true;
+                    }
+                  },
                 ),
               ),
             ),
-          )
+          ),
+          ..._state.posts.isLoaded
+              ? []
+              : [
+                  Scaffold(
+                    backgroundColor: Colors.grey.withOpacity(0.9),
+                  )
+                ],
         ],
       ),
     );

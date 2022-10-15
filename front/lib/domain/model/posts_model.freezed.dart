@@ -20,7 +20,9 @@ PostsModel _$PostsModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PostsModel {
-  List<PostModel> get list => throw _privateConstructorUsedError;
+  List<PostModel> get list =>
+      throw _privateConstructorUsedError; // Add your fields here
+  bool get isLoaded => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,7 @@ abstract class $PostsModelCopyWith<$Res> {
           PostsModel value, $Res Function(PostsModel) then) =
       _$PostsModelCopyWithImpl<$Res, PostsModel>;
   @useResult
-  $Res call({List<PostModel> list});
+  $Res call({List<PostModel> list, bool isLoaded});
 }
 
 /// @nodoc
@@ -51,12 +53,17 @@ class _$PostsModelCopyWithImpl<$Res, $Val extends PostsModel>
   @override
   $Res call({
     Object? list = null,
+    Object? isLoaded = null,
   }) {
     return _then(_value.copyWith(
       list: null == list
           ? _value.list
           : list // ignore: cast_nullable_to_non_nullable
               as List<PostModel>,
+      isLoaded: null == isLoaded
+          ? _value.isLoaded
+          : isLoaded // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -69,7 +76,7 @@ abstract class _$$_PostsModelCopyWith<$Res>
       __$$_PostsModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<PostModel> list});
+  $Res call({List<PostModel> list, bool isLoaded});
 }
 
 /// @nodoc
@@ -84,12 +91,17 @@ class __$$_PostsModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? list = null,
+    Object? isLoaded = null,
   }) {
     return _then(_$_PostsModel(
       list: null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
               as List<PostModel>,
+      isLoaded: null == isLoaded
+          ? _value.isLoaded
+          : isLoaded // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -98,7 +110,9 @@ class __$$_PostsModelCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true, genericArgumentFactories: true)
 class _$_PostsModel with DiagnosticableTreeMixin implements _PostsModel {
-  const _$_PostsModel({final List<PostModel> list = const []}) : _list = list;
+  const _$_PostsModel(
+      {final List<PostModel> list = const [], this.isLoaded = false})
+      : _list = list;
 
   factory _$_PostsModel.fromJson(Map<String, dynamic> json) =>
       _$$_PostsModelFromJson(json);
@@ -111,9 +125,14 @@ class _$_PostsModel with DiagnosticableTreeMixin implements _PostsModel {
     return EqualUnmodifiableListView(_list);
   }
 
+// Add your fields here
+  @override
+  @JsonKey()
+  final bool isLoaded;
+
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PostsModel(list: $list)';
+    return 'PostsModel(list: $list, isLoaded: $isLoaded)';
   }
 
   @override
@@ -121,7 +140,8 @@ class _$_PostsModel with DiagnosticableTreeMixin implements _PostsModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'PostsModel'))
-      ..add(DiagnosticsProperty('list', list));
+      ..add(DiagnosticsProperty('list', list))
+      ..add(DiagnosticsProperty('isLoaded', isLoaded));
   }
 
   @override
@@ -129,13 +149,15 @@ class _$_PostsModel with DiagnosticableTreeMixin implements _PostsModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PostsModel &&
-            const DeepCollectionEquality().equals(other._list, _list));
+            const DeepCollectionEquality().equals(other._list, _list) &&
+            (identical(other.isLoaded, isLoaded) ||
+                other.isLoaded == isLoaded));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_list), isLoaded);
 
   @JsonKey(ignore: true)
   @override
@@ -152,13 +174,16 @@ class _$_PostsModel with DiagnosticableTreeMixin implements _PostsModel {
 }
 
 abstract class _PostsModel implements PostsModel {
-  const factory _PostsModel({final List<PostModel> list}) = _$_PostsModel;
+  const factory _PostsModel({final List<PostModel> list, final bool isLoaded}) =
+      _$_PostsModel;
 
   factory _PostsModel.fromJson(Map<String, dynamic> json) =
       _$_PostsModel.fromJson;
 
   @override
   List<PostModel> get list;
+  @override // Add your fields here
+  bool get isLoaded;
   @override
   @JsonKey(ignore: true)
   _$$_PostsModelCopyWith<_$_PostsModel> get copyWith =>

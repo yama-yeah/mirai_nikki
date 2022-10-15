@@ -9,6 +9,7 @@ class PostsModel with _$PostsModel {
   @JsonSerializable(explicitToJson: true, genericArgumentFactories: true)
   const factory PostsModel({
     @Default([]) List<PostModel> list, // Add your fields here
+    @Default(false) bool isLoaded,
   }) = _PostsModel;
   factory PostsModel.fromJson(Map<String, dynamic> json) =>
       _$PostsModelFromJson(json);

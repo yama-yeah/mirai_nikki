@@ -4,19 +4,24 @@ import 'package:mirai_nikki/domain/model/post_model.dart';
 import 'package:mirai_nikki/domain/model/user_model.dart';
 import 'package:mirai_nikki/domain/services/myApi/my_api.dart';
 import 'package:mirai_nikki/domain/state/user_state.dart';
+import 'package:mirai_nikki/ui/home/home_usecase.dart';
 
 import 'home_ui_model.dart';
 
 class HomeControllerImpl implements HomeController {
   final MyApiService api;
   final UserModel user;
+  final HomeUseCase useCase;
   HomeControllerImpl(
     this.api,
     this.user,
+    this.useCase,
   );
   @override
   Future<PostModel> addPost() async {
-    return await api.post(user.uid);
+    final post = await api.post(user.uid);
+    //useCase.addPost(post);
+    return post;
   }
 }
 
@@ -27,11 +32,12 @@ abstract class HomeController {
 final homeControllerProvider = Provider<HomeController>((ref) {
   final user = ref.watch(userStateProvider);
   final api = ref.watch(myApiProvider);
-  return HomeControllerImpl(api, user);
+  final useCase = ref.watch(homeUseCaseProvider);
+  return HomeControllerImpl(api, user, useCase);
 });
 
 final homeUiModelProvider = StateProvider((ref) {
-  final posts = ref.watch(postsStateProvider);
+  final posts = ref.watch(PostsStateNotifierProvider);
   final post = PostModel();
   return HomeUiModel(posts: posts, post: post);
 });

@@ -22,3 +22,23 @@ final postsStateProvider = StateProvider((ref) {
       loading: () {});
   return state;
 });
+
+class PostsStateNotifier extends StateNotifier<PostsModel> {
+  PostsStateNotifier(this.user, this.api) : super(PostsModel());
+  final UserModel user;
+  final MyApiService api;
+  fetchPosts() async {
+    var posts = await api.fetchPosts(user.uid);
+    posts = posts.copyWith(isLoaded: true);
+    state = posts;
+  }
+}
+
+final PostsStateNotifierProvider =
+    StateNotifierProvider<PostsStateNotifier, PostsModel>((ref) {
+  final user = ref.watch(userStateProvider);
+  final api = ref.watch(myApiProvider);
+  final provider = PostsStateNotifier(user, api);
+  provider.fetchPosts();
+  return provider;
+});

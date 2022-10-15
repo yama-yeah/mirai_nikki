@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -35,6 +36,7 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       title: 'GoRouter Example',
+      builder: EasyLoading.init(),
     );
   }
 }
@@ -47,7 +49,7 @@ final _routerProvider = Provider((ref) {
         path: '/',
         builder: (context, state) => HomeView(
           ref.watch(homeControllerProvider),
-          ref.watch(postsStateProvider),
+          ref.watch(homeUiModelProvider),
         ),
       ),
       GoRoute(
