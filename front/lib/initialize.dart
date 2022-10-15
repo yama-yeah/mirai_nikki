@@ -13,7 +13,7 @@ class InitializeStateNotifier extends StateNotifier<bool> {
   final SecureStorage secure;
   InitializeStateNotifier(this.userStateController, this.api, this.secure)
       : super(false);
-  void initialize() async {
+  Future<void> initialize() async {
     final user = await secure.loadUser();
     if (user == const UserModel()) {
       //final model = await api.register();

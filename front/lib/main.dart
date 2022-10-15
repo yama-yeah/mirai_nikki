@@ -47,6 +47,7 @@ class MyApp extends HookConsumerWidget {
 
 final _routerProvider = Provider(
   (ref) {
+    final user = ref.watch(userStateProvider);
     return GoRouter(
       routes: [
         GoRoute(
@@ -81,9 +82,10 @@ final _routerProvider = Provider(
         ),
       ],
       redirect: (context, state) {
-        final user = ref.watch(userStateProvider);
         Logger().d("redirect:${state.subloc}");
-        if (state.subloc == "/welcome" || state.subloc == "/personal") {
+        if (state.subloc == "/welcome" ||
+            state.subloc == "/personal" ||
+            state.subloc == "/result") {
           return null;
         }
         return user != const UserModel() ? null : "/welcome";

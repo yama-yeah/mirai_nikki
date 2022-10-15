@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mirai_nikki/domain/const/const.dart';
 import 'package:mirai_nikki/domain/model/personal_model.dart';
+import 'package:mirai_nikki/domain/model/user_model.dart';
+import 'package:mirai_nikki/domain/services/secure/secure.dart';
+import 'package:mirai_nikki/domain/state/user_state.dart';
 
 class ResultView extends HookConsumerWidget {
   final PersonalModel _model;
@@ -51,7 +55,9 @@ class ResultView extends HookConsumerWidget {
                 backgroundColor: Colors.lightBlueAccent,
                 foregroundColor: Colors.black,
               ),
-              onPressed: () {
+              onPressed: () async {
+                ref.watch(userStateProvider.notifier).state =
+                    await ref.watch(secureStorageProvider).loadUser();
                 context.go("/");
               },
               child: Text(

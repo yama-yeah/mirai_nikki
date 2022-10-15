@@ -19,7 +19,6 @@ class PersonalControllerImpl implements PersonalController {
     final personal = booleans2Personal(list);
     final user = await api.register(personal);
     await secure.saveUser(user);
-    userController.state = user;
   }
 }
 

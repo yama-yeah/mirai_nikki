@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -11,8 +12,11 @@ class PostsStateNotifier extends StateNotifier<PostsModel> {
   PostsStateNotifier(this.user, this.api) : super(PostsModel());
   final UserModel user;
   final MyApiService api;
-  fetchPosts() async {
+  resetState() {
     state = state.copyWith(isLoaded: false);
+  }
+
+  fetchPosts() async {
     var posts = await api.fetchPosts(user.uid);
     Logger().d("fetched:$posts");
     posts = posts.copyWith(isLoaded: true);
