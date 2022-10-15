@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mirai_nikki/domain/model/post_model.dart';
@@ -23,10 +24,16 @@ class HomeControllerImpl implements HomeController {
     //useCase.addPost(post);
     return post;
   }
+
+  @override
+  Future<void> updateImage(Uint8List bytes, PostModel post) async {
+    api.updateImage(bytes, post);
+  }
 }
 
 abstract class HomeController {
   Future<PostModel> addPost();
+  Future<void> updateImage(Uint8List bytes, PostModel postModel);
 }
 
 final homeControllerProvider = Provider<HomeController>((ref) {
@@ -37,7 +44,7 @@ final homeControllerProvider = Provider<HomeController>((ref) {
 });
 
 final homeUiModelProvider = StateProvider((ref) {
-  final posts = ref.watch(PostsStateNotifierProvider);
-  final post = PostModel();
+  final posts = ref.watch(postsStateNotifierProvider);
+  const post = PostModel();
   return HomeUiModel(posts: posts, post: post);
 });

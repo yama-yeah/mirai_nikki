@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mirai_nikki/domain/model/personal_model.dart';
+import 'package:mirai_nikki/domain/util/personal_util.dart';
 import 'package:mirai_nikki/ui/personal/personal_controller.dart';
 
 class PersonalContent extends HookConsumerWidget {
@@ -45,9 +47,9 @@ class PersonalContent extends HookConsumerWidget {
               onPressed: () async {
                 inputBools.value = [...inputBools.value, true];
                 if (inputBools.value.length == 6) {
-                  await _controller
-                      .register(inputBools.value)
-                      .then((value) => context.go("/welcome"));
+                  await _controller.register(inputBools.value).then((value) =>
+                      context.go("/result",
+                          extra: booleans2Personal(inputBools.value)));
                 }
               },
               child: Container(
@@ -71,9 +73,9 @@ class PersonalContent extends HookConsumerWidget {
               onPressed: () async {
                 inputBools.value = [...inputBools.value, false];
                 if (inputBools.value.length == 6) {
-                  await _controller
-                      .register(inputBools.value)
-                      .then((value) => context.go("/"));
+                  await _controller.register(inputBools.value).then((value) =>
+                      context.go("/result",
+                          extra: booleans2Personal(inputBools.value)));
                 }
               },
               child: Container(

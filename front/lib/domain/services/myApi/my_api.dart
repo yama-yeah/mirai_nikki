@@ -16,18 +16,19 @@ abstract class MyApiService {
   Future<UserModel> register(PersonalModel personalModel);
   Future<PostsModel> fetchPosts(String uid);
   Future<PostModel> post(String uid);
-  //Future<void> updatePost(PostModel post, UserModel user);
+  Future<void> updateImage(List<int> bytes, PostModel postModel);
+  Future<void> updatePost(PostModel post);
 }
 
 class MyApiServiceImpl implements MyApiService {
-  final URL = "https://virtserver.swaggerhub.com/cathiecode/mirai_nikki/1.0.0/";
+  final URL = "http://yogen-nikki.miselogy.miraidai.fun/";
 
   @override
   Future<UserModel> register(PersonalModel personalModel) async {
     try {
       var raw = await http.post(
         Uri.parse('${URL}user'),
-        headers: {'accept': 'application/json'},
+        headers: {'content-type': 'application/json'},
         body: jsonEncode(personalModel.toJson()),
       );
       final json = json2map(raw);
@@ -45,7 +46,7 @@ class MyApiServiceImpl implements MyApiService {
     try {
       var raw = await http.get(
         Uri.parse('${URL}posts/by-uid/$uid'),
-        headers: {'accept': 'application/json'},
+        headers: {'content-type': 'application/json'},
       );
       //Logger().wtf(raw.body);
       final json = json2map(raw);
@@ -62,33 +63,45 @@ class MyApiServiceImpl implements MyApiService {
     final body = convert.json.encode({"uid": uid});
     try {
       var raw = await http.post(Uri.parse('${URL}post'),
-          headers: {'accept': 'application/json'}, body: body);
+          headers: {'content-type': 'application/json'}, body: body);
+      Logger().d(raw.body);
       final json = json2map(raw);
       return PostModel.fromJson(json);
     } catch (e) {
-      Logger().e("Api:$e");
+      Logger().e(e);
       //throw Exception(e);
       return const PostModel();
     }
   }
 
-  /*@override
-  Future<void> updatePost(PostModel post, UserModel user) async {
+  @override
+  Future<void> updateImage(List<int> bytes, PostModel post) async {
+    final body = convert.json.encode(bytes);
+    try {
+      var raw = await http.post(Uri.parse('${URL}image'),
+          headers: {'content-type': 'application/json'}, body: body);
+      Logger().d(raw.body);
+      final json = json2map(raw);
+      updatePost(post.copyWith(image: json["url"]));
+    } catch (e) {
+      Logger().e(e);
+      //throw Exception(e);
+    }
+  }
+
+  @override
+  Future<void> updatePost(PostModel post) async {
     final body = convert.json.encode({
       "description": post.description,
       "image": post.image,
     });
     try {
-      var raw = await http.post(Uri.parse('${URL}post'),
-          headers: {'accept': 'application/json'}, body: body);
-      final json = json2map(raw);
-      return PostModel.fromJson(json);
+      var raw = await http.put(Uri.parse('${URL}post/${post.id}'),
+          headers: {'content-type': 'application/json'}, body: body);
     } catch (e) {
       Logger().e("Api:$e");
-      //throw Exception(e);
-      return const PostModel();
     }
-  }*/
+  }
 }
 
 final myApiProvider = Provider<MyApiService>((ref) => MyApiServiceImpl());

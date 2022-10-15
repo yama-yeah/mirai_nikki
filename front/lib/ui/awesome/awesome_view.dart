@@ -12,7 +12,7 @@ class AwesomeView extends HookConsumerWidget {
   const AwesomeView(this.post, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final a = ref.watch(PostsStateNotifierProvider.notifier);
+    final a = ref.watch(postsStateNotifierProvider.notifier);
     useEffect(() {
       a.fetchPosts();
     }, []);
@@ -60,7 +60,7 @@ class AwesomeView extends HookConsumerWidget {
           "です",
           style: const TextStyle(fontSize: 25),
         ),
-        Spacer(),
+        const Spacer(),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
               shadowColor: Colors.transparent,

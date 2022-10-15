@@ -45,7 +45,10 @@ class HomeContent extends HookConsumerWidget {
     final diary = <Widget>[];
 
     for (var post in _state.posts.list) {
-      diary.add(DiaryFragment(post));
+      diary.add(DiaryFragment(
+        post,
+        uploadImage: _controller.updateImage,
+      ));
     }
     return Scaffold(
       body: Stack(
@@ -64,6 +67,9 @@ class HomeContent extends HookConsumerWidget {
               ),
               ...diary,
               mainDivider,
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
           Align(
@@ -72,9 +78,10 @@ class HomeContent extends HookConsumerWidget {
               padding: const EdgeInsets.all(10),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(color: Colors.black, width: 4),
-                    shape: BoxShape.circle),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 4),
+                  shape: BoxShape.circle,
+                ),
                 child: IconButton(
                   icon: const FittedBox(
                     fit: BoxFit.fill,
@@ -82,15 +89,17 @@ class HomeContent extends HookConsumerWidget {
                   ),
                   onPressed: () async {
                     if (EasyLoading.isShow) {
-                      Logger().d("You now loading");
+                      Logger().d("You now loading\nWait!!!!");
                     } else {
                       EasyLoading.show(status: 'loading...');
                       await _controller.addPost().then((value) {
                         flag.value = false;
                         EasyLoading.dismiss();
-
-                        context.push(
-                            "/awesome?query=${jsonEncode(value.toJson())}");
+                        // Logger().wtf(jsonEncode(value.toJson()));
+                        // final encodedJson =
+                        //     Uri.encodeComponent(jsonEncode(value.toJson()));
+                        // Logger().d(encodedJson);
+                        context.push("""/awesome""", extra: value);
                       });
                       flag.value = true;
                     }

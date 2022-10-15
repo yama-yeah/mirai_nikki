@@ -6,29 +6,13 @@ import 'package:mirai_nikki/domain/model/user_model.dart';
 import 'package:mirai_nikki/domain/services/myApi/my_api.dart';
 
 final userStateProvider = StateProvider((ref) => const UserModel());
-final postsFutureProvider = FutureProvider((ref) {
-  //許して
-  final user = ref.watch(userStateProvider);
-  final api = ref.watch(myApiProvider);
-  return api.fetchPosts(user.uid);
-});
-
-final postsStateProvider = StateProvider((ref) {
-  PostsModel state = const PostsModel();
-  ref.watch(postsFutureProvider).when(
-      data: (data) {
-        state = data;
-      },
-      error: (error, stackTrace) {},
-      loading: () {});
-  return state;
-});
 
 class PostsStateNotifier extends StateNotifier<PostsModel> {
   PostsStateNotifier(this.user, this.api) : super(PostsModel());
   final UserModel user;
   final MyApiService api;
   fetchPosts() async {
+    state = state.copyWith(isLoaded: false);
     var posts = await api.fetchPosts(user.uid);
     Logger().d("fetched:$posts");
     posts = posts.copyWith(isLoaded: true);
@@ -36,7 +20,7 @@ class PostsStateNotifier extends StateNotifier<PostsModel> {
   }
 }
 
-final PostsStateNotifierProvider =
+final postsStateNotifierProvider =
     StateNotifierProvider<PostsStateNotifier, PostsModel>((ref) {
   final user = ref.watch(userStateProvider);
   final api = ref.watch(myApiProvider);

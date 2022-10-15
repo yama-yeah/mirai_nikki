@@ -1,16 +1,24 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:mirai_nikki/domain/model/post_model.dart';
 import 'package:mirai_nikki/domain/util/date_util.dart';
 import 'package:mirai_nikki/ui/widget/main_divider.dart';
 
 class DiaryFragment extends StatelessWidget {
   final PostModel _model;
-  const DiaryFragment(this._model, {super.key});
+  final Function(Uint8List bytes, PostModel post) uploadImage;
+  const DiaryFragment(this._model, {super.key, required this.uploadImage});
 
   @override
   Widget build(BuildContext context) {
+    final ImagePicker _picker = ImagePicker();
     return Column(
       children: [
         mainDivider,
@@ -22,8 +30,8 @@ class DiaryFragment extends StatelessWidget {
               unixTime2DiffTime(_model.deadline),
               textAlign: TextAlign.left,
               style: TextStyle(
-                  color:
-                      compareNow(_model.deadline) ? Colors.black : Colors.red),
+                color: compareNow(_model.deadline) ? Colors.red : Colors.black,
+              ),
             ),
           ),
         ),
@@ -48,24 +56,55 @@ class DiaryFragment extends StatelessWidget {
             height: 120,
 
             width: MediaQuery.of(context).size.width,
-            child: SizedBox(
-              height: 50,
-              width: 100,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    shadowColor: Colors.transparent,
-                    backgroundColor: Colors.blueGrey,
-                    alignment: Alignment.center),
-                child: Container(
-                  child: compareNow(_model.deadline)
-                      ? Row(children: [
-                          Icon(Icons.camera_alt_sharp),
-                          Text("写真を撮影する"),
-                        ])
-                      : Text("この思い出は存在しません"),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                image: DecorationImage(
+                  image: Image.network(
+                    _model.image,
+                    fit: BoxFit.fitHeight,
+                  ).image,
+                  fit: BoxFit.cover,
                 ),
               ),
+              height: 50,
+              width: 100,
+              child: !compareNow(_model.deadline)
+                  ? const Center(
+                      child: Text(
+                        "この思い出は存在しません",
+                        style: TextStyle(fontSize: 17, color: Colors.white),
+                      ),
+                    )
+                  : _model.image !=
+                          "https://firebasestorage.googleapis.com/v0/b/yogen-nikki.appspot.com/o/glitch-white-animation.gif?alt=media&token=5de1cffa-75b6-43d4-aa3e-b6c5c5762dcd"
+                      ? null
+                      : ElevatedButton(
+                          onPressed: () async {
+                            try {
+                              final XFile? photo = await _picker.pickImage(
+                                  source: ImageSource.camera);
+
+                              final bytes = await photo?.readAsBytes();
+                              List<int> bodyBytes = [];
+                              if (bytes == null) {
+                                return;
+                              }
+                              await uploadImage(bytes, _model);
+                              Logger().d(bodyBytes);
+                            } catch (e) {}
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.transparent,
+                              backgroundColor: Colors.transparent,
+                              alignment: Alignment.center),
+                          child: Container(
+                            child: Row(children: const [
+                              Icon(Icons.camera_alt_sharp),
+                              Text("写真を撮影する"),
+                            ]),
+                          ),
+                        ),
             ),
           ),
         ),
