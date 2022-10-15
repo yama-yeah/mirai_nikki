@@ -16,9 +16,3 @@ class HomeUiModel with _$HomeUiModel {
   factory HomeUiModel.fromJson(Map<String, dynamic> json) =>
       _$HomeUiModelFromJson(json);
 }
-
-final homeUiModelProvider = StateProvider((ref) {
-  final posts = ref.watch(postsStateProvider);
-  final post = PostModel();
-  return HomeUiModel(posts: posts, post: post);
-});
