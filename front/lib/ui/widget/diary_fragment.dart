@@ -2,6 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mirai_nikki/domain/model/post_model.dart';
+import 'package:mirai_nikki/domain/util/date_util.dart';
 import 'package:mirai_nikki/ui/widget/main_divider.dart';
 
 class DiaryFragment extends StatelessWidget {
@@ -13,14 +14,16 @@ class DiaryFragment extends StatelessWidget {
     return Column(
       children: [
         mainDivider,
-        const Align(
+        Align(
           alignment: Alignment.topLeft,
           child: Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             child: Text(
-              "一週間前",
+              unixTime2DiffTime(_model.deadline),
               textAlign: TextAlign.left,
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(
+                  color:
+                      compareNow(_model.deadline) ? Colors.black : Colors.red),
             ),
           ),
         ),
@@ -43,6 +46,27 @@ class DiaryFragment extends StatelessWidget {
             ),
             //image
             height: 120,
+
+            width: MediaQuery.of(context).size.width,
+            child: SizedBox(
+              height: 50,
+              width: 100,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    shadowColor: Colors.transparent,
+                    backgroundColor: Colors.blueGrey,
+                    alignment: Alignment.center),
+                child: Container(
+                  child: compareNow(_model.deadline)
+                      ? Row(children: [
+                          Icon(Icons.camera_alt_sharp),
+                          Text("写真を撮影する"),
+                        ])
+                      : Text("この思い出は存在しません"),
+                ),
+              ),
+            ),
           ),
         ),
       ],
