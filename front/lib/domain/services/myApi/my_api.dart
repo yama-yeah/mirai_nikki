@@ -16,10 +16,11 @@ abstract class MyApiService {
   Future<UserModel> register(PersonalModel personalModel);
   Future<PostsModel> fetchPosts(String uid);
   Future<PostModel> post(String uid);
+  //Future<void> updatePost(PostModel post, UserModel user);
 }
 
 class MyApiServiceImpl implements MyApiService {
-  final URL = "http://yogen-nikki.miselogy.miraidai.fun/";
+  final URL = "https://virtserver.swaggerhub.com/cathiecode/mirai_nikki/1.0.0/";
 
   @override
   Future<UserModel> register(PersonalModel personalModel) async {
@@ -70,6 +71,24 @@ class MyApiServiceImpl implements MyApiService {
       return const PostModel();
     }
   }
+
+  /*@override
+  Future<void> updatePost(PostModel post, UserModel user) async {
+    final body = convert.json.encode({
+      "description": post.description,
+      "image": post.image,
+    });
+    try {
+      var raw = await http.post(Uri.parse('${URL}post'),
+          headers: {'accept': 'application/json'}, body: body);
+      final json = json2map(raw);
+      return PostModel.fromJson(json);
+    } catch (e) {
+      Logger().e("Api:$e");
+      //throw Exception(e);
+      return const PostModel();
+    }
+  }*/
 }
 
 final myApiProvider = Provider<MyApiService>((ref) => MyApiServiceImpl());
