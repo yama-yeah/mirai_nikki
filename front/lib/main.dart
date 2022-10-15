@@ -15,9 +15,11 @@ import 'package:mirai_nikki/initialize.dart';
 import 'package:mirai_nikki/ui/awesome/awesome_view.dart';
 import 'package:mirai_nikki/ui/home/home_controller.dart';
 import 'package:mirai_nikki/ui/home/home_view.dart';
+import 'package:mirai_nikki/ui/personal/personal_view.dart';
 import 'package:mirai_nikki/ui/welcome/welcome_view.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -41,35 +43,40 @@ class MyApp extends HookConsumerWidget {
   }
 }
 
-final _routerProvider = Provider((ref) {
-  final user = ref.watch(userStateProvider);
-  return GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => HomeView(
-          ref.watch(homeControllerProvider),
-          ref.watch(homeUiModelProvider),
+final _routerProvider = Provider(
+  (ref) {
+    final user = ref.watch(userStateProvider);
+    return GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => HomeView(),
         ),
-      ),
-      GoRoute(
-        path: '/welcome',
-        builder: (context, state) => WelcomeView(),
-      ),
-      GoRoute(
-        path: '/awesome',
-        builder: (context, state) {
-          final query = state.queryParams['query'];
-          return AwesomeView(PostModel.fromJson(jsonDecode(query!)));
-        },
-      ),
-    ],
-    redirect: (context, state) {
-      Logger().d("redirect:${state.subloc}");
-      if (state.subloc == "/welcome") {
-        return null;
-      }
-      return user != const UserModel() ? null : "/welcome";
-    },
-  );
-});
+        GoRoute(
+          path: '/welcome',
+          builder: (context, state) => WelcomeView(),
+        ),
+        GoRoute(
+          path: '/awesome',
+          builder: (context, state) {
+            final query = state.queryParams['query'];
+            return AwesomeView(PostModel.fromJson(jsonDecode(query!)));
+          },
+        ),
+        GoRoute(
+          path: "/personal",
+          builder: (context, state) {
+            return PersonalView();
+          },
+        )
+      ],
+      redirect: (context, state) {
+        Logger().d("redirect:${state.subloc}");
+        if (state.subloc == "/welcome" || state.subloc == "/personal") {
+          return null;
+        }
+        return user != const UserModel() ? null : "/welcome";
+      },
+    );
+  },
+);
