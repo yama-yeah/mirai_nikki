@@ -13,7 +13,7 @@ class WelcomeView extends HookConsumerWidget {
         Container(),
         const Spacer(),
         const Text(
-          "よていにっきへようこそ",
+          "預言日記へようこそ",
           style: TextStyle(fontSize: 20),
         ),
         const Spacer(),
