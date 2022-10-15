@@ -18,16 +18,30 @@ import 'package:mirai_nikki/ui/widget/diary_fragment.dart';
 import 'package:mirai_nikki/ui/widget/main_divider.dart';
 
 class HomeView extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return HomeContent(
+      ref.watch(homeControllerProvider),
+      ref.watch(homeUiModelProvider),
+    );
+  }
+}
+
+class HomeContent extends HookConsumerWidget {
   final HomeController _controller;
   final HomeUiModel _state;
-  HomeView(this._controller, this._state, {super.key});
-  PostModel post = PostModel();
+  const HomeContent(this._controller, this._state, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMounted = useIsMounted();
+    useEffect(() {
+      if (_state.posts.isLoaded) {
+        EasyLoading.dismiss();
+      } else {
+        EasyLoading.show(status: 'loading...');
+      }
+    }, [_state.posts.isLoaded]);
     final flag = useState(false);
-    final postModel = useState(const PostModel());
     final diary = <Widget>[];
 
     for (var post in _state.posts.list) {
@@ -62,7 +76,7 @@ class HomeView extends HookConsumerWidget {
                     border: Border.all(color: Colors.black, width: 4),
                     shape: BoxShape.circle),
                 child: IconButton(
-                  icon: FittedBox(
+                  icon: const FittedBox(
                     fit: BoxFit.fill,
                     child: Icon(Icons.add),
                   ),
@@ -89,7 +103,7 @@ class HomeView extends HookConsumerWidget {
               ? []
               : [
                   Scaffold(
-                    backgroundColor: Colors.grey.withOpacity(0.9),
+                    backgroundColor: Colors.black.withOpacity(0.9),
                   )
                 ],
         ],
