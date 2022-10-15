@@ -21,8 +21,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserModel {
   String get uid => throw _privateConstructorUsedError;
-  bool get outdoor => throw _privateConstructorUsedError;
-  bool get extrovert => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +33,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({String uid, bool outdoor, bool extrovert});
+  $Res call({String uid});
 }
 
 /// @nodoc
@@ -52,22 +50,12 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @override
   $Res call({
     Object? uid = null,
-    Object? outdoor = null,
-    Object? extrovert = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      outdoor: null == outdoor
-          ? _value.outdoor
-          : outdoor // ignore: cast_nullable_to_non_nullable
-              as bool,
-      extrovert: null == extrovert
-          ? _value.extrovert
-          : extrovert // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -79,7 +67,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       __$$_UserModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, bool outdoor, bool extrovert});
+  $Res call({String uid});
 }
 
 /// @nodoc
@@ -94,22 +82,12 @@ class __$$_UserModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? outdoor = null,
-    Object? extrovert = null,
   }) {
     return _then(_$_UserModel(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      outdoor: null == outdoor
-          ? _value.outdoor
-          : outdoor // ignore: cast_nullable_to_non_nullable
-              as bool,
-      extrovert: null == extrovert
-          ? _value.extrovert
-          : extrovert // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -117,10 +95,7 @@ class __$$_UserModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
-  const _$_UserModel(
-      {this.uid = "%VoidUserModel%",
-      this.outdoor = true,
-      this.extrovert = true});
+  const _$_UserModel({this.uid = "%VoidUserModel%"});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -128,16 +103,10 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
   @override
   @JsonKey()
   final String uid;
-  @override
-  @JsonKey()
-  final bool outdoor;
-  @override
-  @JsonKey()
-  final bool extrovert;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModel(uid: $uid, outdoor: $outdoor, extrovert: $extrovert)';
+    return 'UserModel(uid: $uid)';
   }
 
   @override
@@ -145,9 +114,7 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'UserModel'))
-      ..add(DiagnosticsProperty('uid', uid))
-      ..add(DiagnosticsProperty('outdoor', outdoor))
-      ..add(DiagnosticsProperty('extrovert', extrovert));
+      ..add(DiagnosticsProperty('uid', uid));
   }
 
   @override
@@ -155,15 +122,12 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
-            (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.outdoor, outdoor) || other.outdoor == outdoor) &&
-            (identical(other.extrovert, extrovert) ||
-                other.extrovert == extrovert));
+            (identical(other.uid, uid) || other.uid == uid));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, outdoor, extrovert);
+  int get hashCode => Object.hash(runtimeType, uid);
 
   @JsonKey(ignore: true)
   @override
@@ -180,20 +144,13 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
 }
 
 abstract class _UserModel implements UserModel {
-  const factory _UserModel(
-      {final String uid,
-      final bool outdoor,
-      final bool extrovert}) = _$_UserModel;
+  const factory _UserModel({final String uid}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
 
   @override
   String get uid;
-  @override
-  bool get outdoor;
-  @override
-  bool get extrovert;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

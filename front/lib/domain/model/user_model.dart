@@ -7,8 +7,6 @@ part 'user_model.g.dart';
 class UserModel with _$UserModel {
   const factory UserModel({
     @Default("%VoidUserModel%") String uid,
-    @Default(true) bool outdoor,
-    @Default(true) bool extrovert,
   }) = _UserModel;
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
