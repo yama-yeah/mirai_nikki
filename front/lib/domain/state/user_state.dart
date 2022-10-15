@@ -1,5 +1,6 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:mirai_nikki/domain/model/posts_model.dart';
 import 'package:mirai_nikki/domain/model/user_model.dart';
 import 'package:mirai_nikki/domain/services/myApi/my_api.dart';
@@ -29,6 +30,7 @@ class PostsStateNotifier extends StateNotifier<PostsModel> {
   final MyApiService api;
   fetchPosts() async {
     var posts = await api.fetchPosts(user.uid);
+    Logger().d("fetched:$posts");
     posts = posts.copyWith(isLoaded: true);
     state = posts;
   }
