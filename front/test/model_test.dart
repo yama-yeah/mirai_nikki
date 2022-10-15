@@ -5,7 +5,7 @@ import 'package:mirai_nikki/domain/model/user_model.dart';
 
 void main() {
   test('model test', () async {
-    Logger().d(const User());
+    Logger().d(const UserModel());
     Logger().d(const PostModel());
   });
 }
