@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mirai_nikki/domain/model/post_model.dart';
+import 'package:mirai_nikki/domain/state/user_state.dart';
 import 'package:mirai_nikki/ui/widget/main_divider.dart';
 
 class AwesomeView extends HookConsumerWidget {
@@ -10,6 +12,10 @@ class AwesomeView extends HookConsumerWidget {
   const AwesomeView(this.post, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final a = ref.watch(PostsStateNotifierProvider.notifier);
+    useEffect(() {
+      a.fetchPosts();
+    }, []);
     return Scaffold(
       backgroundColor: Colors.lightBlue[100],
       body: Column(children: [
