@@ -6,7 +6,7 @@ part 'post_model.g.dart';
 @freezed
 class PostModel with _$PostModel {
   const factory PostModel({
-    @Default("%VoidUser%") String id,
+    @Default("%VoidId%") String id,
     @Default("") String title,
     @Default("") String description,
     @Default("") String image,

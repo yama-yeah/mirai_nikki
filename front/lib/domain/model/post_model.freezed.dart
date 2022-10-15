@@ -150,7 +150,7 @@ class __$$_PostModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PostModel with DiagnosticableTreeMixin implements _PostModel {
   const _$_PostModel(
-      {this.id = "%VoidUser%",
+      {this.id = "%VoidId%",
       this.title = "",
       this.description = "",
       this.image = "",

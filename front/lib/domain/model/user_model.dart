@@ -4,9 +4,12 @@ part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
 @freezed
-class User with _$User {
-  const factory User({
-    @Default("%VoidUser%") String uid, // Add your fields here
-  }) = _User;
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+class UserModel with _$UserModel {
+  const factory UserModel({
+    @Default("%VoidUserModel%") String uid,
+    @Default(true) bool outdoor,
+    @Default(true) bool extrovert,
+  }) = _UserModel;
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 }
