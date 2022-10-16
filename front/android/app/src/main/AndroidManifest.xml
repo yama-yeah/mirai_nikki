@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mirai_nikki">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
    <application
-        android:label="mirai_nikki"
+        android:label="予言日記"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
