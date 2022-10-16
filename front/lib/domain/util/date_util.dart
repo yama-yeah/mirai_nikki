@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 DateTime unixTime2Date(int time) {
   return DateTime.fromMillisecondsSinceEpoch(time * 1000);
@@ -22,7 +23,7 @@ String unixTime2DiffTime(int time) {
     return '${-1 * diff.inHours}時間前';
   } else if (diff.inDays < 1) {
     return '${diff.inHours}時間後';
-  } else if (diff.inDays < 7) {
+  } else if (diff.inDays < 30) {
     return '${diff.inDays}日後';
   } else {
     return '${(diff.inDays / 30).floor()}月後';

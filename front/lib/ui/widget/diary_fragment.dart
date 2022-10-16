@@ -1,9 +1,5 @@
-import 'dart:convert';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
@@ -30,7 +26,7 @@ class DiaryFragment extends StatelessWidget {
               unixTime2DiffTime(_model.deadline),
               textAlign: TextAlign.left,
               style: TextStyle(
-                color: compareNow(_model.deadline) ? Colors.red : Colors.black,
+                color: !compareNow(_model.deadline) ? Colors.red : Colors.black,
               ),
             ),
           ),
@@ -60,10 +56,11 @@ class DiaryFragment extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 image: DecorationImage(
-                  image: Image.network(
+                  image: CachedNetworkImageProvider(_model.image),
+                  /*Image.network(
                     _model.image,
                     fit: BoxFit.fitHeight,
-                  ).image,
+                  ).image*/
                   fit: BoxFit.cover,
                 ),
               ),
